@@ -16,19 +16,15 @@ function App() {
 	})
 
 	console.log(edges)
+	console.log(artists)
 
 	const graph = {
 		nodes: artists,
-		edges: artists.map((_, index) => {
-			return {
-				from: 1,
-				to: index + 1
-			}
-		})
+		edges: edges
 	}
 	const options = {
 		layout: {
-			hierarchical: true
+			hierarchical: false
 		},
 		edges: {
 			color: '#000000'
