@@ -11,7 +11,10 @@ export const getAssociatedArtists = (artist: string) => {
 							^dbo:associatedBand ?value .
 							?value rdfs:label ?label.
 							FILTER (lang(?label) = "en")
-					}`,
+					}
+					LIMIT 10
+					`,
+					
 			format: 'application/sparql-results+json',
 			timeout: 30000,
 			signal_void: 'on',
