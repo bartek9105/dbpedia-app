@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState('Michael Jackson')
-	const { artists, getArtists } = useGetArtists(searchTerm)
+	const {artists, getArtists } = useGetArtists(searchTerm)
 
 	const edges = artists.map((artist, index) => {
 		return {
@@ -14,7 +14,7 @@ function App() {
 			to: index + 1
 		}
 	})
-
+	
 	console.log(edges)
 	console.log(artists)
 
