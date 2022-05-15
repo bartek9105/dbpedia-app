@@ -20,8 +20,14 @@ function App() {
 
 	const graph = {
 		nodes: artists,
-		edges: edges
+		edges: edges,
 	}
+	const event = {
+		select: ({nodes, edges} : {nodes:any, edges:any}) => {
+			alert(nodes)
+		}
+	}
+
 	const options = {
 		layout: {
 			hierarchical: false
@@ -31,6 +37,7 @@ function App() {
 		},
 		height: '500px'
 	}
+
 
 	return (
 		<div className='App'>
@@ -46,7 +53,7 @@ function App() {
 					</Button>
 				</Flex>
 			</Container>
-			<Graph graph={graph} options={options} key={uuid()} />
+			<Graph graph={graph} options={options} events={event} key={uuid()} />
 		</div>
 	)
 }
