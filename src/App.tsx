@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useGetArtists } from './hooks/useGetArtists'
 import Graph from 'react-vis-network-graph'
 import { v4 as uuid } from 'uuid'
+import { NodeFlags } from 'typescript'
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState('Michael Jackson')
@@ -14,7 +15,6 @@ function App() {
 			to: index + 1
 		}
 	})
-
 	console.log(edges)
 	console.log(artists)
 
@@ -32,8 +32,8 @@ function App() {
 		height: '500px'
 	}
 	const event = {
-		select: ({nodes, edges} : {nodes:any, edges:any}) => {
-			alert(nodes)
+		select: ({nodes} : {nodes:any}) => {
+			alert(artists[nodes-1]["abstract"])
 		}
 	}
 
