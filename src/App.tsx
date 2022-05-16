@@ -31,6 +31,11 @@ function App() {
 		},
 		height: '500px'
 	}
+	const event = {
+		select: ({nodes, edges} : {nodes:any, edges:any}) => {
+			alert(nodes)
+		}
+	}
 
 	return (
 		<div className='App'>
@@ -46,7 +51,7 @@ function App() {
 					</Button>
 				</Flex>
 			</Container>
-			<Graph graph={graph} options={options} key={uuid()} />
+			<Graph graph={graph} options={options} events={event} key={uuid()} />
 		</div>
 	)
 }

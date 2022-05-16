@@ -7,10 +7,13 @@ export const getAssociatedArtists = (artist: string) => {
 			query: `SELECT *
 			WHERE
 					{
-							?artist rdfs:label "${artist}"@en ;
-							^dbo:associatedBand ?value .
-							?value rdfs:label ?label.
-							FILTER (lang(?label) = "en")
+						?artist rdfs:label "${artist}" @en ;
+						^dbo:associatedBand ?value .
+						?value rdfs:label ?label.
+						FILTER (lang(?label) = "en")
+						?value dbo:abstract ?abstract
+						FILTER (lang(?abstract) = "en")
+						?value <http://dbpedia.org/ontology/thumbnail> ?image
 					}
 					LIMIT 10
 					`,

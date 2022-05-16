@@ -14,7 +14,9 @@ export const useGetArtists = (searchTerm: string) => {
 					return {
 						label: el.label.value,
 						id: index + 1,
-						title: el.label.value
+						title: el.label.value,
+						abstract: el.abstract.value,
+						image: el.image.value,
 					}
 				})
 			)
