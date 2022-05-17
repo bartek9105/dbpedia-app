@@ -1,57 +1,88 @@
 import { Input, Button, Flex, Container } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useGetArtists } from './hooks/useGetArtists'
-import Graph from 'react-vis-network-graph'
-import { v4 as uuid } from 'uuid'
-import { NodeFlags } from 'typescript'
+import ArtistAbstractDrawer from './components/ArtistAbstractDrawer'
+import GraphNode from './components/GraphNode'
+import { Artist } from './types/Artist.type'
+import { Graph } from 'react-d3-graph'
+import { graphConfig } from './config/graph.config'
+import './App.css'
 
 function App() {
-	const [searchTerm, setSearchTerm] = useState('Michael Jackson')
-	const { artists, getArtists } = useGetArtists(searchTerm)
+	const [searchTerm, setSearchTerm] = useState<string | null>(null)
+	const { testing, artists, getArtists, getArtistInfo } =
+		useGetArtists(searchTerm)
+	const [selectedArtistData, setSelectedArtistData] = useState<Artist | null>(
+		null
+	)
+	const [isDrawerOpened, setIsDrawerOpened] = useState(false)
 
-	const edges = artists.map((artist, index) => {
-		return {
-			from: 1,
-			to: index + 1
-		}
-	})
-	console.log(edges)
-	console.log(artists)
+	const nodes = [
+		{
+			id: testing?.[0]?.label,
+			viewGenerator: () => <GraphNode imgUrl={testing?.[0]?.image} />,
+			position: 'center'
+		},
+		...artists?.map((artist: any) => {
+			return {
+				id: artist.label,
+				viewGenerator: () => <GraphNode imgUrl={artist.image} />
+			}
+		})
+	]
 
-	const graph = {
-		nodes: artists,
-		edges: edges
+	const data = {
+		nodes,
+		links: artists?.map((artist: any, index: number) => {
+			return {
+				source: testing?.[0]?.label,
+				target: artist.label
+			}
+		})
 	}
-	const options = {
-		layout: {
-			hierarchical: false
-		},
-		edges: {
-			color: '#000000'
-		},
-		height: '500px'
-	}
-	const event = {
-		select: ({nodes} : {nodes:any}) => {
-			alert(artists[nodes-1]["abstract"])
-		}
+
+	const onClickNode = (nodeId: any) => {
+		const selectedArtist = artists?.find(
+			(artist: any) => artist.label === nodeId
+		)
+		if (selectedArtist) setSelectedArtistData(selectedArtist)
+		setIsDrawerOpened(true)
 	}
 
 	return (
 		<div className='App'>
-			<Container p={2}>
+			<Container py={4}>
 				<Flex>
 					<Input
 						placeholder='Search for an artist...'
 						onChange={(e) => setSearchTerm(e.target.value)}
-						mr={16}
+						mr={8}
 					/>
-					<Button colorScheme='blue' onClick={() => getArtists()}>
+					<Button
+						colorScheme='blue'
+						onClick={() => {
+							getArtists()
+							getArtistInfo()
+						}}
+						disabled={!searchTerm}
+					>
 						Search
 					</Button>
 				</Flex>
 			</Container>
-			<Graph graph={graph} options={options} events={event} key={uuid()} />
+			{testing.length > 0 && artists.length > 0 ? (
+				<Graph
+					id='graph-id'
+					data={data}
+					config={graphConfig}
+					onClickNode={onClickNode}
+				/>
+			) : null}
+			<ArtistAbstractDrawer
+				artist={selectedArtistData}
+				isOpen={isDrawerOpened}
+				onClose={() => setIsDrawerOpened(false)}
+			/>
 		</div>
 	)
 }

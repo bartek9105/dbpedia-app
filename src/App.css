@@ -1,0 +1,10 @@
+text {
+	display: none;
+}
+
+#graph-id-graph-wrapper > svg {
+	margin: 0 auto;
+	width: 1000px !important;
+	height: 1000px !important;
+	border: 1px solid #3182ce;
+}
