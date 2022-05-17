@@ -20,7 +20,7 @@ export const useGetArtists = (searchTerm: string | null) => {
 	}
 
 	return {
-		testing: artist,
+		artistInfo: artist,
 		artists,
 		getArtists,
 		getArtistInfo
